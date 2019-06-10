@@ -18,7 +18,7 @@ Typical results:
 ![typical1](imgs/donut_plot_with_subgroups_from_dataframe1.png)  
 ![typical2](imgs/donut_plot_with_subgroups_from_dataframe2.png)
 
-The second notebook shows the underlying code that runs that script and makes a plot like shown in [the example in ordering of the subgroups** in the []the example from The Python Graph Gallery](https://python-graph-gallery.com/163-donut-plot-with-subgroups/).  
+The second notebook shows the underlying code that runs that script and makes a plot like shown in [the example from The Python Graph Gallery](https://python-graph-gallery.com/163-donut-plot-with-subgroups/).  
 Typical Result:
 
 
