@@ -12,7 +12,7 @@ Click on `launch binder` badge above to spin up a sesion where you can make plot
 ## Demonstration notebooks
 
 
-The first notebook that opens demonstrates a script that makes it easy to make a plot like the following from a dataframe.  
+The first notebook that opens in the active session demonstrates a script that makes it easy to make a plot like the following from a dataframe.  
 Typical results:
 
 ![typical1](imgs/donut_plot_with_subgroups_from_dataframe1.png)  
