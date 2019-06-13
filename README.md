@@ -7,7 +7,7 @@ Click on `launch binder` badge above to spin up a sesion where you can make plot
 
 *These scripts/approaches take dataframes or tabular text forms.* 
 
-If you have data as a table from elsewhere you can convert it into tabular text as tab-separated or comma-separated form and read that into Pandas. An example, of using tab-separated is specifically illustrated in the demonstrations.
+If you have data as a table from elsewhere you can convert it/export into tabular text as tab-separated or comma-separated form and read that can be used as input by any of the approaches here.
 
 -----
 
