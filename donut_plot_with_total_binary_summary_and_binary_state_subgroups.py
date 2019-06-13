@@ -188,7 +188,6 @@ def extract_dataframe(file_name):
     Specify, which with file ending in `.pkl`,`.tsv`, or `.csv`.
     Case doesn't matter for the extension.
     '''
-
     extension = Path(file_name).suffix
     if extension.lower() == ".pkl":
         return pd.read_pickle(file_name)

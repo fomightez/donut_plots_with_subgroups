@@ -188,7 +188,6 @@ def extract_dataframe(file_name):
     Specify, which with file ending in `.pkl`,`.tsv`, or `.csv`.
     Case doesn't matter for the extension.
     '''
-
     extension = Path(file_name).suffix
     if extension.lower() == ".pkl":
         return pd.read_pickle(file_name)
@@ -392,7 +391,7 @@ def donut_plot_with_subgroups_from_dataframe(
         list_o_subgroup_size_l.append(dfc.tolist())
         subgroups_per_group_l.append(f7(group[subgroups_col].tolist()))
     
-    # Delineate data for the plot:  (SEE TEST SETTINGS BELOW)
+    # Delineate data for the plot:  
     group_names= grouped.size().index.tolist()
     group_size= grouped.size().tolist() #len of each groupby grouping
     '''
