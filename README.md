@@ -26,6 +26,7 @@ Typical results (**two separate images shown**):
 
 The second notebook shows the underlying code that runs that script and makes a plot like shown in [the example from The Python Graph Gallery](https://python-graph-gallery.com/163-donut-plot-with-subgroups/).  
 Typical result:
+
 ![typical_basics](imgs/basics_output.png)
 
 
