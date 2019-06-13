@@ -312,7 +312,8 @@ def f7(seq):
 
 def donut_plot_with_subgroups_from_dataframe(
     df_file=None, df=None, groups_col=None, subgroups_col=None,
-    save_image=False, save_vg=False, hilolist = None, 
+    save_image=False, save_vg=False, include_percent_in_grp_label=True,
+    include_total_in_grp_label=True, hilolist = None, 
     sort_on_subgroup_name=False, advance_color_increments=0, 
     include_title=include_title):
     '''
@@ -324,6 +325,9 @@ def donut_plot_with_subgroups_from_dataframe(
     to return a plot figure object.
     - optionally, for when `save_image=True`, whether you want to save the plot 
     image as vector graphics 
+    - Optionally including the percent of total for each group in the plot 
+    label.
+    - Optionally including the total amount for each group in the plot label.
     - optionally, a list to use as the high to low intensity degree for coloring
     the subgroups can be specified.
     - optionally, to use subgroup name in sorting subgroups. This needs to be
@@ -406,6 +410,17 @@ def donut_plot_with_subgroups_from_dataframe(
     # use, if initial skips specified
     colorm_per_grp=[next(colormp) for g in group_names]
 
+    # Create a switch system for the labels
+    ip_it_grp_label = {
+        (True,True):["{} ({:.1%} [{}])".format(
+            x,y/len(df),y) for x, y in zip(group_names, group_size)],
+        (True,False):["{} ({:.1%})".format(
+            x,y/len(df)) for x, y in zip(group_names, group_size)],
+        (False,True):["{} [{}]".format(
+            x,y) for x, y in zip(group_names, group_size)],
+        (False,False):["{}".format(
+            x) for x, y in zip(group_names, group_size)]}
+
     #Set up for plot.
     fig, ax = plt.subplots(figsize=plot_figure_size)
     ax.axis('equal')
@@ -413,8 +428,8 @@ def donut_plot_with_subgroups_from_dataframe(
 
     ### First Ring (outside)
     ### This will be the main groups
-    labels_with_grp_sz = ["{} ({:.1%} [{}])".format(x,
-        y/len(df),y) for x, y in zip(group_names, group_size)]
+    labels_with_grp_sz = ip_it_grp_label[(
+        include_percent_in_grp_label,include_total_in_grp_label)]
     mypie, _ = plt.pie(
         group_size, radius=1.3, labels=labels_with_grp_sz, 
         textprops={'fontsize': plot_text_size},
@@ -518,6 +533,8 @@ def main():
     kwargs = {}
     kwargs['save_image'] = True
     kwargs['save_vg'] = save_vg
+    kwargs['include_percent_in_grp_label'] = include_percent_in_grp_label
+    kwargs['include_total_in_grp_label'] = include_total_in_grp_label
     kwargs['hilolist'] = hilolist
     kwargs['sort_on_subgroup_name'] = sort_on_subgroup_name
     kwargs['advance_color_increments'] = advance_color_increments
@@ -577,7 +594,12 @@ if __name__ == "__main__":
         `{}`. Adding this flag will set the saved file size to `{}`.".format(
         plot_figure_size,large_img_size),action="store_true")
     '''
-
+    parser.add_argument("-lopg", "--leave_off_percent_in_group",help=
+        "add this flag to not display the percent of the total for each group.\
+        ",action="store_true")
+    parser.add_argument("-lotg", "--leave_off_total_in_group",help=
+        "add this flag to not display the total amount for each group.\
+        ",action="store_true")
     parser.add_argument("-svg", "--save_vg",help=
         "add this flag to save as vector graphics \
         (**RECOMMENDED FOR PUBLICATION***) instead of default png. Not default \
@@ -619,6 +641,8 @@ if __name__ == "__main__":
         sys.exit(1)
     args = parser.parse_args()
     save_vg = args.save_vg
+    include_percent_in_grp_label= not args.leave_off_percent_in_group
+    include_total_in_grp_label= not args.leave_off_total_in_group
     if args.large_image:
         plot_figure_size = large_img_size
     hilolist = args.hilolist

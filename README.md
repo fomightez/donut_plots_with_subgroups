@@ -5,13 +5,15 @@ Several generalized scripts for making donut plots that include subgroups
 
 Click on `launch binder` badge above to spin up a sesion where you can make plots.
 
-*For now all these take dataframes or tabular text forms as the input data form until I add a way to use lists.*
+*These scripts/approaches take dataframes or tabular text forms.* 
+
+If you have data as a table from elsewhere you can convert it into tabular text as tab-separated or comma-separated form and read that into Pandas. An example, of using tab-separated is specifically illustrated in the demonstrations.
 
 -----
 
 ## Demonstration notebooks
 
-
+The intent is that there be (at least) four notebooks:
 The first notebook that opens in the active session demonstrates a script that makes it easy to make a plot like the following from a dataframe.  
 Typical results (**two separate images shown**):
 
