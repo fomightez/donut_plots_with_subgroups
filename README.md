@@ -13,8 +13,8 @@ If you have data as a table from elsewhere you can convert it/export into tabula
 
 ## Demonstration notebooks
 
-The intent is that there be (at least) four notebooks:
-The first notebook that opens in the active session demonstrates a script that makes it easy to make a plot like the following from a dataframe.  
+The intent is that there be (at least) **four** notebooks:
+The **first** notebook that opens in the active session demonstrates a script that makes it easy to make a plot like the following from a dataframe.  
 Typical results (**two separate images shown**):
 
 ![typical1](imgs/donut_plot_with_subgroups_from_dataframe1.png)  
@@ -24,16 +24,16 @@ Typical results (**two separate images shown**):
 
 ![typical2](imgs/donut_plot_with_subgroups_from_dataframe2.png)
 
-The second notebook shows the underlying code that runs that script and makes a plot like shown in [the example from The Python Graph Gallery](https://python-graph-gallery.com/163-donut-plot-with-subgroups/).  
+The **second** notebook shows the underlying code that runs that script and makes a plot like shown in [the example from The Python Graph Gallery](https://python-graph-gallery.com/163-donut-plot-with-subgroups/).  
 Typical result:
 
 ![typical_basics](imgs/basics_output.png)
 
 
-The third notebook shows how to make a plot that includes a summary of the subgroups on the left with a plot with the subgroups on the right.  
+The **third** notebook shows how to make a plot that includes a summary of the subgroups on the left with a plot with the subgroups on the right.  
 Typical result:
 
-The fourth notebook shows how to make a plot much like the third notebook produces; however, this script is specialized for binary data for the subgroups, i.e., they can only have two resulting states at most.  
+The **fourth** notebook shows how to make a plot much like the third notebook produces; however, this script is specialized for binary data for the subgroups, i.e., they can only have two resulting states at most.  
 Typical result:
 
 
