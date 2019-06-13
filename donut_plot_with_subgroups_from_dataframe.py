@@ -102,6 +102,10 @@ plot_figure_size = (7,8) # width by height written as `(width,height)`;
 # If you change this to substantial degree, you may also want to 
 # adjust text size settings below and possibly turn off plot titles using 
 # `include_title=False`in favor of adding your own in post-processing.
+outer_ring_radius = 1.3 # radius of the outer ring of the donut plot
+inner_ring_radius = outer_ring_radius-0.3 # radius of the inner ring of donut
+outer_ring_width=0.3
+inner_ring_width=0.4
 include_title = True
 plot_title = "BREAKDOWN"
 title_text_size = 20     # font size for title above plot
@@ -431,10 +435,10 @@ def donut_plot_with_subgroups_from_dataframe(
     labels_with_grp_sz = ip_it_grp_label[(
         include_percent_in_grp_label,include_total_in_grp_label)]
     mypie, _ = plt.pie(
-        group_size, radius=1.3, labels=labels_with_grp_sz, 
+        group_size, radius=outer_ring_radius, labels=labels_with_grp_sz, 
         textprops={'fontsize': plot_text_size},
         colors=[colormp(0.63) for colormp in colorm_per_grp] )
-    plt.setp( mypie, width=0.3, edgecolor='white')
+    plt.setp( mypie, width=outer_ring_width, edgecolor='white')
      
     ### Second Ring (Inside)
     ### This will be the subgroup counting for each group
@@ -477,10 +481,10 @@ def donut_plot_with_subgroups_from_dataframe(
     # flatten that list
     sub_grp_colors = [i for sublt in list_sub_grp_colors_l for i in sublt]
     mypie2, _ = plt.pie(
-        subgroup_size, radius=1.3-0.3, labels=subgroup_names, 
+        subgroup_size, radius=inner_ring_radius, labels=subgroup_names, 
         textprops={'fontsize': plot_text_size}, labeldistance=0.7, 
         colors=sub_grp_colors)
-    plt.setp( mypie2, width=0.4, edgecolor='white')
+    plt.setp( mypie2, width=inner_ring_width, edgecolor='white')
     plt.margins(0,0)
     if include_title:
         plt.title(plot_title, size = title_text_size)
