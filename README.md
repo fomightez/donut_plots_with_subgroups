@@ -43,5 +43,6 @@ Typical result:
 
 -----
 
-Click on `launch binder` badge above to spin up a sesion where you can make plots.
+Click on a `launch binder` badge on this page to spin up a sesion where you can make plots.
 
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/fomightez/donut_plots_with_subgroups/master?filepath=index.ipynb)

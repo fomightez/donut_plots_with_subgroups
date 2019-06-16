@@ -334,6 +334,8 @@ def donut_plot_with_total_summary_and_subgroups_from_dataframe(
     states_per_group_l = []
     for name,group in grouped:
         dfc = group[state4subgroup_col].value_counts()
+        if sort_on_subgroup_name:
+            dfc = group[state4subgroup_col].value_counts().sort_index()
         list_o_subgroup_names_l.append(dfc.index.tolist())
         list_o_subgroup_size_l.append(dfc.tolist())
         states_per_group_l.append(f7(group[state4subgroup_col].tolist()))
@@ -349,8 +351,6 @@ def donut_plot_with_total_summary_and_subgroups_from_dataframe(
     '''
     # flatten each list of lists made above to get the list needed
     subgroup_names=[i for sublt in list_o_subgroup_names_l for i in sublt]
-    #assert len(subgroup_names) == 2 * len(grouped) <-- That would be true if
-    # all states represented by all subgroups, but that may not be the case
     subgroup_size=[i for sublt in list_o_subgroup_size_l for i in sublt]
     assert len(subgroup_size) == len(subgroup_names)
 
