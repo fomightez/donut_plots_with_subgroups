@@ -452,8 +452,12 @@ def donut_plot_with_subgroups_from_dataframe(
         # note depending if script called from command line.
         sys.stderr.write("Note: No list to specify high to low intensity "
             "coloring "
-            "provided,\nand so using abundance represented per subgroup "
-            "to specify color intensity.\n"
+            "provided, and so using '{}',\nwhere leftmost identifer corresponds "
+            "to most intense and rightmost is least.\n".format(
+            ",".join(str(i) for i in states_represented))) # because subgroups 
+        # could be integers as in example from 
+        # https://python-graph-gallery.com/163-donut-plot-with-subgroups/, best 
+        # to have conversion to string,
         if __name__ == "__main__":
             sys.stderr.write("Look into adding use of the `--hilolist` option "
                 "to specify the order.\n\n")
