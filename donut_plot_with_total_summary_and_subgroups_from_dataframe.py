@@ -458,7 +458,7 @@ def donut_plot_with_total_summary_and_subgroups_from_dataframe(
     if not light_color_for_last_in_state_set:
         int_degree.reverse()
     # determine colors for each subgroup before `plt.pie` step
-    for idx,subgroups_l in enumerate(list_o_subgroup_names_l.):
+    for idx,subgroups_l in enumerate(list_o_subgroup_names_l):
         cm = colorm_per_grp[idx]
         grp_colors = [cm(int_degree[states_represented.index(
             sgrp)]) for sgrp in subgroups_l]
