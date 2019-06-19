@@ -432,7 +432,7 @@ def donut_plot_with_total_summary_and_subgroups_from_dataframe(
     if hilolist:
         assert len(hilolist) == len(states_represented), "The list provided "
         "to specify the intensity degree must include all subgroups. Subgroups "
-        "are: '{}'.format(subgroups_represented)"
+        "are: '{}'.format(states_represented)"
         states_represented = hilolist
     else:
         # Provide feedback on what is being used as high to low intensity list 

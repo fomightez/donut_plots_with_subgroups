@@ -454,7 +454,7 @@ def donut_plot_with_subgroups_from_dataframe(
             "coloring "
             "provided, and so using '{}',\nwhere leftmost identifer corresponds "
             "to most intense and rightmost is least.\n".format(
-            ",".join(str(i) for i in states_represented))) # because subgroups 
+            ",".join(str(i) for i in subgroups_represented))) # because subgroups 
         # could be integers as in example from 
         # https://python-graph-gallery.com/163-donut-plot-with-subgroups/, best 
         # to have conversion to string,
