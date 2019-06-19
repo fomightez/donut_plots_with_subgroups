@@ -13,7 +13,7 @@ If you have data as a table from elsewhere you can convert it/export into tabula
 
 ## Demonstration notebooks
 
-The intent is that there be (at least) **four** notebooks:
+The intent is that there be (at least) **four** notebooks:  
 The **first** notebook that opens in the active session demonstrates a script that makes it easy to make a plot like the following from a dataframe.  
 Typical results (**two separate images shown**):
 
