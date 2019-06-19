@@ -350,12 +350,10 @@ def donut_plot_with_total_binary_summary_and_binary_state_subgroups(
     # use `value_counts()` on each group to get the count and name of each state
     list_o_subgroup_names_l = []
     list_o_subgroup_size_l = []
-    states_per_group_l = []
     for name,group in grouped:
         dfc = group[binary_state_col].value_counts()
         list_o_subgroup_names_l.append(dfc.index.tolist())
         list_o_subgroup_size_l.append(dfc.tolist())
-        states_per_group_l.append(f7(group[binary_state_col].tolist()))
     
     # Delineate data for the plot:  (SEE TEST SETTINGS BELOW)
     group_names= grouped.size().index.tolist()
@@ -476,8 +474,9 @@ def donut_plot_with_total_binary_summary_and_binary_state_subgroups(
         # Provide feedback on what is being used as high to low intensity list 
         # so user can adjust; using `if __name__ == "__main__"` to customize 
         # note depending if script called from command line.
-        sys.stderr.write("Note:No list to specify high to low intensity coloring "
-            "provided and so using '{}',\nwhere leftmost identifer corresponds "
+        sys.stderr.write("Note: No list to specify high to low intensity "
+            "coloring "
+            "provided, and so using '{}',\nwhere leftmost identifer corresponds "
             "to most intense and rightmost is least.\n".format(
             ",".join(str(i) for i in states_represented))) # because subgroups 
         # could be integers as in example from 
@@ -495,7 +494,7 @@ def donut_plot_with_total_binary_summary_and_binary_state_subgroups(
     if not light_color_for_last_in_state_set:
         int_degree.reverse()
     # determine colors for each subgroup before `plt.pie` step
-    for idx,subgroups_l in enumerate(states_per_group_l):
+    for idx,subgroups_l in enumerate(list_o_subgroup_names_l):
         cm = colorm_per_grp[idx]
         grp_colors = [cm(int_degree[states_represented.index(
             sgrp)]) for sgrp in subgroups_l]
@@ -716,8 +715,8 @@ if __name__ == "__main__":
         hilolist = args.hilolist.split(',')
         #if they hapen to be integers or floats, convert so will match type in 
         # dataframe
-        if all([is_number(s) for s in string_list]):
-            hilolist = [cast_to_number(s) for s in string_list]
+        if all([is_number(s) for s in hilolist]):
+            hilolist = [cast_to_number(s) for s in hilolist]
             # make sure all float if any are float, because line above will 
             # cast to integer if possible
             if any(isinstance(x, float) for x in hilolist):

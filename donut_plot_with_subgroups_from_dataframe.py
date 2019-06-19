@@ -333,8 +333,9 @@ def donut_plot_with_subgroups_from_dataframe(
     - Optionally including the total amount for each group in the plot label.
     - optionally, a list to use as the high to low intensity degree for coloring
     the subgroups can be specified.
-    - optionally, to use subgroup name in sorting subgroups. This needs to be
-    set to `True` to get arrangment of subgroups lile in the example
+    - optionally, to use subgroup name in sorting subgroups displayed in the 
+    inner ring of the plot. This needs to be set to `True` to get arrangement of 
+    subgroups in inner ring like in the example
     https://python-graph-gallery.com/163-donut-plot-with-subgroups/
     - optionally, how many cycles you want the sequential color palette 
     generator to advance through its first colors.
@@ -382,14 +383,12 @@ def donut_plot_with_subgroups_from_dataframe(
     # use `value_counts()` on each group to get the count and name of each state
     list_o_subgroup_names_l = []
     list_o_subgroup_size_l = []
-    subgroups_per_group_l = []
     for name,group in grouped:
         dfc = group[subgroups_col].value_counts()
         if sort_on_subgroup_name:
             dfc = group[subgroups_col].value_counts().sort_index()
         list_o_subgroup_names_l.append(dfc.index.tolist())
         list_o_subgroup_size_l.append(dfc.tolist())
-        subgroups_per_group_l.append(f7(group[subgroups_col].tolist()))
     
     # Delineate data for the plot:  
     group_names= grouped.size().index.tolist()
@@ -451,26 +450,23 @@ def donut_plot_with_subgroups_from_dataframe(
         # Provide feedback on what is being used as high to low intensity list 
         # so user can adjust; using `if __name__ == "__main__"` to customize 
         # note depending if script called from command line.
-        sys.stderr.write("Note:No list to specify high to low intensity coloring "
-            "provided and so using '{}',\nwhere leftmost identifer corresponds "
-            "to most intense and rightmost is least.\n".format(
-            ",".join(str(i) for i in subgroups_represented))) # because subgroups 
-        # could be integers as in example from 
-        # https://python-graph-gallery.com/163-donut-plot-with-subgroups/, best 
-        # to have conversion to string,
+        sys.stderr.write("Note: No list to specify high to low intensity "
+            "coloring "
+            "provided,\nand so using abundance represented per subgroup "
+            "to specify color intensity.\n"
         if __name__ == "__main__":
             sys.stderr.write("Look into adding use of the `--hilolist` option "
                 "to specify the order.\n\n")
         else:
             sys.stderr.write("Provide a Python list as `hilolist` when calling "
-                "the function to specify the order.\n\n")
+                "the function to specify the order of intensity.\n\n")
     # assign intensity degree settings for each subgroup so consistent among 
     # other groups
     int_degree = np.linspace(0.6, 0.2, num=len(subgroups_represented))
     if not light_color_for_last_in_subgroup:
         int_degree.reverse()
     # determine colors for each subgroup before `plt.pie` step
-    for idx,subgroups_l in enumerate(subgroups_per_group_l):
+    for idx,subgroups_l in enumerate(list_o_subgroup_names_l):
         cm = colorm_per_grp[idx]
         grp_colors = [cm(int_degree[subgroups_represented.index(
             sgrp)]) for sgrp in subgroups_l]
@@ -608,8 +604,8 @@ if __name__ == "__main__":
         with as typical image file. ",
         action="store_true")
     parser.add_argument("-ssn", "--sort_on_subgroup_name",help=
-        "add this flag to sort the subgroups based on the subgroup name like \
-        in example at \
+        "add this flag to sort the subgroups display in the inner ring based \
+        on the subgroup name like in example at \
         https://python-graph-gallery.com/163-donut-plot-with-subgroups/. ",
         action="store_true")
     parser.add_argument('-hll', '--hilolist', action='store', type=str, 
@@ -652,8 +648,8 @@ if __name__ == "__main__":
         hilolist = args.hilolist.split(',')
         #if they hapen to be integers or floats, convert so will match type in 
         # dataframe
-        if all([is_number(s) for s in string_list]):
-            hilolist = [cast_to_number(s) for s in string_list]
+        if all([is_number(s) for s in hilolist]):
+            hilolist = [cast_to_number(s) for s in hilolist]
             # make sure all float if any are float, because line above will 
             # cast to integer if possible
             if any(isinstance(x, float) for x in hilolist):
