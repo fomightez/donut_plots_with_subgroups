@@ -559,7 +559,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog='donut_plot_with_subgroups_from_dataframe.py',
         description="donut_plot_with_subgroups_from_dataframe.py \
         takes a dataframe, and some information about columns in the dataframe \
-        and makes a donut plot. FILLL IN HERE. AND GENERALIZE COLORING SO CONISTENT ACROSS GROUPS!!! <---BACK FILL IN OTHER TWO SCRIPTS OR AT LEAST NOT THE BINARY. CONTEMPLATE IF WILL WORK FOR BINARY TOO.\
+        and makes a donut plot. The inner ring is a breakdown of the \
+        subgroupings per each group in the outer ring of the plot.\
         **** Script by Wayne Decatur   \
         (fomightez @ github) ***")
 
