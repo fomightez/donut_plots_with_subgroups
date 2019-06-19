@@ -402,8 +402,6 @@ def donut_plot_with_subgroups_from_dataframe(
     '''
     # flatten each list of lists made above to get the list needed
     subgroup_names=[i for sublt in list_o_subgroup_names_l for i in sublt]
-    #assert len(subgroup_names) == 2 * len(grouped) <-- That would be true if
-    # all states represented by all subgroups, but that may not be the case
     subgroup_size=[i for sublt in list_o_subgroup_size_l for i in sublt]
     assert len(subgroup_size) == len(subgroup_names)
 
@@ -461,7 +459,7 @@ def donut_plot_with_subgroups_from_dataframe(
         # https://python-graph-gallery.com/163-donut-plot-with-subgroups/, best 
         # to have conversion to string,
         if __name__ == "__main__":
-            sys.stderr.write("Look into adding use of the `--hilolist` opition "
+            sys.stderr.write("Look into adding use of the `--hilolist` option "
                 "to specify the order.\n\n")
         else:
             sys.stderr.write("Provide a Python list as `hilolist` when calling "

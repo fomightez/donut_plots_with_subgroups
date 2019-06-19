@@ -447,7 +447,7 @@ def donut_plot_with_total_summary_and_subgroups_from_dataframe(
         # https://python-graph-gallery.com/163-donut-plot-with-subgroups/, best 
         # to have conversion to string,
         if __name__ == "__main__":
-            sys.stderr.write("Look into adding use of the `--hilolist` opition "
+            sys.stderr.write("Look into adding use of the `--hilolist` option "
                 "to specify the order.\n\n")
         else:
             sys.stderr.write("Provide a Python list as `hilolist` when calling "
