@@ -242,6 +242,59 @@ def sequential_color_maps_generator():
         # https://stackoverflow.com/a/48793922/8508004
         yield sns.light_palette(rgb, input="rgb", as_cmap=True)
 
+def is_number(s):
+    '''
+    check if a string can be cast to a float or numeric (integer).
+
+    Takes a string.
+
+    Returns True or False
+    fixed from https://www.pythoncentral.io/how-to-check-if-a-string-is-a-number-in-python-including-unicode/
+    later noted similar code is at https://code-maven.com/slides/python-programming/is-number
+    '''
+    try:
+        float(s)
+        return True
+    except ValueError:
+        pass
+    try:
+        import unicodedata
+        unicodedata.numeric(s)
+        return True
+    except (TypeError, ValueError):
+        pass
+    return False
+
+def cast_to_number(s):
+    '''
+    Cast a string to a float or integer. 
+    Tries casting to float first and if that works then it tries casting the 
+    string to an integer. (I thought I saw suggestion of that order somewhere 
+    when searching for what I used as `is_number()` check but cannot find source
+    right now.)
+
+    Returns a float, int, or if fails, False. (Where using, it shouldn't ever
+    trigger returning `False` because checked all could be converted first.)
+
+    based on fixed code from https://www.pythoncentral.io/how-to-check-if-a-string-is-a-number-in-python-including-unicode/
+    '''
+    try:
+        number = float(s)
+        try:
+            number = int(s)
+            return number
+        except ValueError:
+            pass
+        return number
+    except ValueError:
+        pass
+    try:
+        import unicodedata
+        num = unicodedata.numeric(s)
+        return num
+    except (TypeError, ValueError):
+        pass
+    return False
 
 def f7(seq):
     '''
