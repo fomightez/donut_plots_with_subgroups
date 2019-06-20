@@ -319,7 +319,9 @@ def donut_plot_with_total_summary_and_subgroups_from_dataframe(
     save_image=False, save_vg=False, include_percent_in_grp_label=True,
     include_total_in_grp_label=True, hilolist = None, 
     sort_on_subgroup_name=False, advance_color_increments=0, 
-    include_subplot_titles=include_subplot_titles):
+    include_subplot_titles=include_subplot_titles, 
+    total_plot_title = total_plot_title, 
+    group_plot_title = group_plot_title):
     '''
     Takes the following:
     - name of a dataframe file (string) or a dataframe
@@ -342,6 +344,10 @@ def donut_plot_with_total_summary_and_subgroups_from_dataframe(
     - optionally, how many cycles you want the sequential color palette 
     generator to advance through its first colors.
     - optionally, whether you want to include subplot title
+    - optionally, whether you want to set total plot title to anything other 
+    than  default; it is disregarded if `include_subplot_titles=False`.
+    - optionally, whether you want to set group plot title to anything other 
+    than default; it is disregarded if `include_subplot_titles=False`.
 
     Returns:
     A plot object, meant for when using in Jupyter or IPython. Not triggered 
