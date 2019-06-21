@@ -65,7 +65,7 @@ __version__ = "0.1.0"
 #
 #
 # To use this after importing/pasting or loading into a cell in a Jupyter 
-# notebook, specify at least the file of annotations:
+# notebook, specify at least the dataframe (or dataframe file) and columns:
 # from donut_plot_with_total_binary_summary_and_binary_state_subgroups import donut_plot_with_total_binary_summary_and_binary_state_subgroups
 # donut_plot_with_total_binary_summary_and_binary_state_subgroups(df_file="data.tsv",binary_state_col="status",grouping_col="subtype");
 #

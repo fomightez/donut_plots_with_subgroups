@@ -69,8 +69,9 @@ __version__ = "0.1.0"
 #
 #
 #
+#
 # To use this after importing/pasting or loading into a cell in a Jupyter 
-# notebook, specify at least the file of annotations:
+# notebook, specify at least the dataframe (or dataframe file) and columns:
 # from donut_plot_with_subgroups_from_dataframe import donut_plot_with_subgroups_from_dataframe
 # donut_plot_with_subgroups_from_dataframe(df_file="data.tsv",groups_col="status",subgroups_col="subtype");
 #
