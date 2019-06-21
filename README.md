@@ -5,7 +5,7 @@ Several generalized scripts for making donut plots that include subgroups
 
 Click on `launch binder` badge above to spin up a sesion where you can make plots.
 
-*These scripts/approaches take dataframes or tabular text forms.* 
+*These scripts/approaches take dataframes or tabular text (tables as text) as input.* 
 
 If you have data as a table from elsewhere you can convert it/export into tabular text as tab-separated or comma-separated form and that can be used as input by any of the approaches here.
 
