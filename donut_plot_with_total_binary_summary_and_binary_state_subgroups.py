@@ -770,7 +770,7 @@ if __name__ == "__main__":
     if args.large_image:
         plot_figure_size = large_img_size
     hilolist = args.hilolist
-    #process to a python list id it exists
+    #process to a python list if it exists
     if hilolist:
         hilolist = args.hilolist.split(',')
         #if they hapen to be integers or floats, convert so will match type in 
