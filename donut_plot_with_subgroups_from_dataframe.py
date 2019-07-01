@@ -634,7 +634,7 @@ if __name__ == "__main__":
         'customize' the set of colors in the plot, if needed. Supply \
         the number to advance after the flag on the command line. For example, \
         `-ac 4`. If that doesn't allow dialing in a good set of colors, and \
-        you know Python, you can edit the `list_of_other_good_sequences`") 
+        you know Python, you can edit the `list_of_other_good_sequences`.") 
 
 
 
