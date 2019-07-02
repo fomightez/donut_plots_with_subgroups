@@ -94,11 +94,13 @@ donut_plot_with_total_summary_and_subgroups_from_dataframe(df_file="data.tsv",st
 ##################################
 #
 
-plot_figure_size = (14,4) # width by height written as `(width,height)`; 
+plot_figure_size = (16.09,4.75) # width by height written as `(width,height)`; 
 # increase the width of overall figure if the labels of the two subplots are
 # overlapping. If you change this to substantial degree, you may also want to 
 # adjust text size settings below and possibly turn off plot titles using 
 # `include_subplot_titles=False`in favor of adding your own in post-processing.
+# Originally `(14,4)` seemed best but adjusted it further after adjusting the 
+# plot title offset and font sizes.
 include_subplot_titles = True
 total_plot_title = "OVERALL"
 group_plot_title = "BY GROUP"
@@ -457,7 +459,7 @@ def donut_plot_with_total_summary_and_subgroups_from_dataframe(
     #1 row 2 cols
     ######first (and only) row, first col (LEFT subplot)
     ax1 = plt.subplot2grid((1,2),(0,0))
-    ax1.axis('equal')
+    #ax1.axis('equal')
     ### First Ring (outside) and only ring for first row, first col
     ### THIS WILL BE TOTAL DATA FOR EACH 'STATE' / 'SUBGROUP'
     labels_with_total_each = ["{} ({:.1%} [{}])".format(x,
@@ -492,7 +494,7 @@ def donut_plot_with_total_summary_and_subgroups_from_dataframe(
 
     plt.margins(0,0)
     if include_subplot_titles:
-        plt.title(total_plot_title, size = title_text_size)
+        plt.title(total_plot_title, size = title_text_size, y=1.08)
 
     
 
@@ -506,7 +508,7 @@ def donut_plot_with_total_summary_and_subgroups_from_dataframe(
     #####first (and only) row, second col (RIGHT subplot)
     colorm_per_grp=[next(colormp) for g in group_names]
     ax1 = plt.subplot2grid((1,2), (0, 1))
-    ax1.axis('equal')
+    #ax1.axis('equal')
     ### First Ring (outside) for first row, second col
     ### This will be size of each group
     labels_with_grp_sz = ip_it_grp_label[(
@@ -565,7 +567,7 @@ def donut_plot_with_total_summary_and_subgroups_from_dataframe(
     plt.setp( mypie2, width=0.4, edgecolor='white')
     plt.margins(0,0)
     if include_subplot_titles:
-        plt.title(group_plot_title, size = title_text_size)
+        plt.title(group_plot_title, size = title_text_size, y=1.08)
 
     #FOR TESTING BASICS USE HARDCODED DATA based mostly on 
     # https://python-graph-gallery.com/163-donut-plot-with-subgroups/ &
