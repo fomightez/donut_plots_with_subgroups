@@ -494,7 +494,9 @@ def donut_plot_with_total_summary_and_subgroups_from_dataframe(
 
     plt.margins(0,0)
     if include_subplot_titles:
-        plt.title(total_plot_title, size = title_text_size, y=1.08)
+        plt.title(total_plot_title, size = title_text_size, y=1.08) # offset
+        # based on https://stackoverflow.com/a/23338363/8508004 and comments 
+        # below that
 
     
 
@@ -567,7 +569,9 @@ def donut_plot_with_total_summary_and_subgroups_from_dataframe(
     plt.setp( mypie2, width=0.4, edgecolor='white')
     plt.margins(0,0)
     if include_subplot_titles:
-        plt.title(group_plot_title, size = title_text_size, y=1.08)
+        plt.title(group_plot_title, size = title_text_size, y=1.08) # offset
+        # based on https://stackoverflow.com/a/23338363/8508004 and comments 
+        # below that
 
     #FOR TESTING BASICS USE HARDCODED DATA based mostly on 
     # https://python-graph-gallery.com/163-donut-plot-with-subgroups/ &
