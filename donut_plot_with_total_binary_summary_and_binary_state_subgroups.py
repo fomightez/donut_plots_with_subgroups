@@ -93,11 +93,13 @@ donut_plot_with_total_binary_summary_and_binary_state_subgroups(df_file="data.ts
 ##################################
 #
 
-plot_figure_size = (14,4) # width by height written as `(width,height)`; 
+plot_figure_size = (16.09,4.75) # width by height written as `(width,height)`; 
 # increase the width of overall figure if the labels of the two subplots are
 # overlapping. If you change this to substantial degree, you may also want to 
 # adjust text size settings below and possibly turn off plot titles using 
 # `include_subplot_titles=False`in favor of adding your own in post-processing.
+# Originally `(14,4)` seemed best but adjusted it further after adjusting the 
+# plot title offset and font sizes.
 include_subplot_titles = True
 total_plot_title = "OVERALL"
 group_plot_title = "BY GROUP"
@@ -491,7 +493,9 @@ def donut_plot_with_total_binary_summary_and_binary_state_subgroups(
 
     plt.margins(0,0)
     if include_subplot_titles:
-        plt.title(total_plot_title, size = title_text_size)
+        plt.title(total_plot_title, size = title_text_size, y=1.08) # offset
+        # based on https://stackoverflow.com/a/23338363/8508004 and comments 
+        # below that
 
 
 
@@ -578,7 +582,9 @@ def donut_plot_with_total_binary_summary_and_binary_state_subgroups(
     plt.setp( mypie2, width=0.4, edgecolor='white')
     plt.margins(0,0)
     if include_subplot_titles:
-        plt.title(group_plot_title, size = title_text_size)
+        plt.title(group_plot_title, size = title_text_size, y=1.08) # offset
+        # based on https://stackoverflow.com/a/23338363/8508004 and comments 
+        # below that
 
     #FOR TESTING BASICS USE HARDCODED DATA based mostly on 
     # https://python-graph-gallery.com/163-donut-plot-with-subgroups/ &
