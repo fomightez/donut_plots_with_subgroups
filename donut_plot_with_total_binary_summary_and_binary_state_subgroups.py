@@ -107,13 +107,10 @@ large_img_size = (27,6.1) # size to be used with `--large_image` `flag. Width
 # by height written as `(width,height)`
 light_color_for_last_in_state_set = True # Set this to False to reverse the 
 # order of the subgroup colors if wrong binary state being colored as light for 
-# the groups in the plot on the right. By default, it will also affect the order 
-# in the 'Total overview' view plot on the left. See 
-# `disregard_light_color_switch_4total` to override that.
-disregard_light_color_switch_4total = False # Set this to `True` if 
-# setting above, `light_color_for_last_in_state_set`, causes the 
-# 'Total overview' plot (on the left) colors to come out opposite what you'd 
-# like but the group plot (the one on the right) looks good othwerwise.
+# the groups in the plot on the right. (This predates addition of `--hilolist`, 
+# which is a better way to control. However, because binary there is only two 
+# options and so leaving this so one doesn't have to necessarily use 
+# `--hilolist` if too cumbersome.)
 save_plot_name_prefix = "donut_plot"
 
 #
@@ -317,8 +314,9 @@ def f7(seq):
 def donut_plot_with_total_binary_summary_and_binary_state_subgroups(
     df_file=None, df=None, binary_state_col=None, grouping_col=None,
     save_image=False, save_vg=False, include_percent_in_grp_label=True,
-    include_total_in_grp_label=True, hilolist = None, 
-    advance_color_increments=0, include_subplot_titles=include_subplot_titles,
+    include_total_in_grp_label=True, hilolist = None, swap_left_colors = False,
+    advance_color_increments=0, advance_right_color_increments=0,
+    include_subplot_titles=include_subplot_titles,
     total_plot_title = total_plot_title, 
     group_plot_title = group_plot_title):
     '''
@@ -333,12 +331,16 @@ def donut_plot_with_total_binary_summary_and_binary_state_subgroups(
     - Optionally including the percent of total for each group in the plot 
     label.
     - Optionally including the total amount for each group in the plot label.
-    - optionally, a list to use as the high to low intensity degree for coloring
+    - Optionally, a list to use as the high to low intensity degree for coloring
     the subgroups can be specified.
+    - Optionally, swap the colors used in the left subplot.
     - optionally, how many cycles you want the sequential color palette 
     generator to advance through its first colors.
-    - optionally, whether you want to include subplot title
-    - optionally, whether you want to set total plot title to anything other 
+    - optionally, how many cycles you want the sequential color palette 
+    generator to advance through its colors for the subplot on the right. Use 
+    this when you are happy with default colors on the left subplot.
+    - Optionally, whether you want to include subplot title
+    - Optionally, whether you want to set total plot title to anything other 
     than  default; it is disregarded if `include_subplot_titles=False`.
     - optionally, whether you want to set group plot title to anything other 
     than default; it is disregarded if `include_subplot_titles=False`.
@@ -404,6 +406,11 @@ def donut_plot_with_total_binary_summary_and_binary_state_subgroups(
     # Prepare derivatives of the dataframe that may be needed for delineating 
     # the plotting data
     tc = df[binary_state_col].value_counts()
+    if hilolist:
+        assert len(hilolist) == len(tc), "The list provided "
+        "to specify the intensity degree must include all subgroups. Subgroups "
+        "are: '{}'.format(list(tc.index))"
+        tc = tc.loc[hilolist] # based on https://stackoverflow.com/a/26203312/8508004
     total_binary_names = tc.index.tolist()
     total_binary_size = tc.tolist()
     grouped = df.groupby(grouping_col)
@@ -475,8 +482,7 @@ def donut_plot_with_total_binary_summary_and_binary_state_subgroups(
     labels_with_total_each = ["{} ({:.1%} [{}])".format(x,
         y/len(df),y) for x, y in zip(total_binary_names, total_binary_size)]
     tcm = [next(colormp)(0.6) for x in total_binary_names]
-    if (not light_color_for_last_in_state_set) and (
-        not disregard_light_color_switch_4total):
+    if swap_left_colors:
         tcm.reverse()
     mypie, _ = plt.pie(
         total_binary_size, radius=1.3, labels=labels_with_total_each , 
@@ -486,6 +492,13 @@ def donut_plot_with_total_binary_summary_and_binary_state_subgroups(
     plt.margins(0,0)
     if include_subplot_titles:
         plt.title(total_plot_title, size = title_text_size)
+
+
+
+
+    # following completion of left subplot, advance colors for right subplot if 
+    # `advance_right_color`/`advance_right_color_increments` specified
+    [next(colormp) for g in range(advance_right_color_increments)]
 
 
     #####first (and only) row, second col (RIGHT subplot)
@@ -526,9 +539,6 @@ def donut_plot_with_total_binary_summary_and_binary_state_subgroups(
     states_represented = f7(df[binary_state_col].tolist())
     #int_degree = [0.6,0.2]
     if hilolist:
-        assert len(hilolist) == len(states_represented), "The list provided "
-        "to specify the intensity degree must include all subgroups. Subgroups "
-        "are: '{}'.format(states_represented)"
         states_represented = hilolist
     else:
         # Provide feedback on what is being used as high to low intensity list 
@@ -662,7 +672,9 @@ def main():
     kwargs['include_percent_in_grp_label'] = include_percent_in_grp_label
     kwargs['include_total_in_grp_label'] = include_total_in_grp_label
     kwargs['hilolist'] = hilolist
+    kwargs['swap_left_colors'] = args.swap_left_colors
     kwargs['advance_color_increments'] = advance_color_increments
+    kwargs['advance_right_color_increments'] = advance_right_color_increments
     donut_plot_with_total_binary_summary_and_binary_state_subgroups(
         df_file=args.df_file,binary_state_col=args.binary_state_col,
         grouping_col=args.grouping_col,**kwargs)
@@ -746,6 +758,17 @@ if __name__ == "__main__":
         indicated so that you'll have the identifiers at hand when running \
         again.\
          ")# based on https://stackoverflow.com/a/24866869/8508004
+    parser.add_argument("-slc", "--swap_left_colors",help=
+        "add this flag to swap the colors used for the left subplot. \
+        Typically, unless `hilolist` is specified, the first color is assigned \
+        to the largest state/subgroup. When `hilolist` is specified, the first \
+        listed state/subgroup/caetgory in the `hilolist` is matched with the \
+        'first' color. However, because there are multiple ways to specify \
+        what is the 'first' color or the 'default' outcome is not \
+        satisfactory, you may find you want to \
+        switch around the colors being used in the left plot. Addgng this \
+        argument provides for that." ,
+        action="store_true")
     parser.add_argument('-ac', '--advance_color', action='store', type=int, 
         default= '0', help="**FOR ADVANCED USE.** Allows for advancing the \
         color palette iterator a specified number of times. The idea is it \
@@ -753,7 +776,19 @@ if __name__ == "__main__":
         'customize' the set of colors in the plot, if needed. Supply \
         the number to advance after the flag on the command line. For example, \
         `-ac 4`. If that doesn't allow dialing in a good set of colors, and \
-        you know Python, you can edit the `list_of_other_good_sequences`") 
+        you know Python, you can edit the `list_of_other_good_sequences`.") 
+    parser.add_argument('-arc', '--advance_right_color', action='store', 
+        type=int, default= '0', help="**FOR ADVANCED USE.** Allows for \
+        advancing the color palette iterator a specified number of times for \
+        just the subplot on the right side, i.e., the subplot on the left \
+        side, for the total, remains untouched. The idea is it \
+        allows skipping a specified amount of the colors to help \
+        'customize' the set of colors in the subplot on the right side when \
+        you are happy with the colors on the left subplot. Supply \
+        the number to advance after the flag on the command line. For example, \
+        `-arc 4`. If that doesn't allow dialing in a good set of colors, and \
+        you know Python, you can edit the `list_of_other_good_sequences`.")
+
 
 
 
@@ -782,6 +817,7 @@ if __name__ == "__main__":
             if any(isinstance(x, float) for x in hilolist):
                 hilolist = [float(x) for x in hilolist]
     advance_color_increments = args.advance_color
+    advance_right_color_increments = args.advance_right_color
 
 
 

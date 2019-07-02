@@ -107,14 +107,11 @@ main_plot_text_size = 14 # font size for text in each plot
 large_img_size = (27,6.1) # size to be used with `--large_image` `flag. Width 
 # by height written as `(width,height)`
 light_color_for_last_in_state_set = True # Set this to False to reverse the 
-# order of the subgroup colors if wrong status being colored as light for 
-# the groups in the plot on the right. By default, it will also affect the order 
-# in the 'Total overview' view plot on the left. See 
-# `disregard_light_color_switch_4total` to override that.
-disregard_light_color_switch_4total = False # Set this to `True` if 
-# setting above, `light_color_for_last_in_state_set`, causes the 
-# 'Total overview' plot (on the left) colors to come out opposite what you'd 
-# like but the group plot (the one on the right) looks good othwerwise.
+# order of the subgroup colors if wrong binary state being colored as light for 
+# the groups in the plot on the right. (This predates addition of `--hilolist`, 
+# which is a better way to control. However, because binary there is only two 
+# options and so leaving this so one doesn't have to necessarily use 
+# `--hilolist` if too cumbersome.)
 save_plot_name_prefix = "donut_plot"
 
 #
@@ -317,11 +314,12 @@ def f7(seq):
 def donut_plot_with_total_summary_and_subgroups_from_dataframe(
     df_file=None, df=None, state4subgroup_col=None, grouping_col=None,
     save_image=False, save_vg=False, include_percent_in_grp_label=True,
-    include_total_in_grp_label=True, hilolist = None, 
-    sort_on_subgroup_name=False, advance_color_increments=0, 
+    include_total_in_grp_label=True, sort_on_subgroup_name=False,
+    hilolist = None, swap_left_colors = False, 
+    advance_left_permute_increments=0, advance_color_increments=0, 
+    advance_right_color_increments=0,
     include_subplot_titles=include_subplot_titles, 
-    total_plot_title = total_plot_title, 
-    group_plot_title = group_plot_title):
+    total_plot_title = total_plot_title, group_plot_title = group_plot_title):
     '''
     Takes the following:
     - name of a dataframe file (string) or a dataframe
@@ -337,14 +335,18 @@ def donut_plot_with_total_summary_and_subgroups_from_dataframe(
     - Optionally including the total amount for each group in the plot label.
     - optionally, a list to use as the high to low intensity degree for coloring
     the subgroups can be specified.
-    - optionally, to use subgroup name in sorting subgroups displayed in the 
+    - Optionally, swap the colors used in the left subplot.
+    - Optionally, to use subgroup name in sorting subgroups displayed in the 
     inner ring of the plot. This needs to be set to `True` to get arrangement of 
     subgroups in inner ring like in the example
     https://python-graph-gallery.com/163-donut-plot-with-subgroups/
-    - optionally, how many cycles you want the sequential color palette 
+    - Optionally, how many cycles you want the sequential color palette 
     generator to advance through its first colors.
-    - optionally, whether you want to include subplot title
-    - optionally, whether you want to set total plot title to anything other 
+    - Optionally, how many cycles you want the sequential color palette 
+    generator to advance through its colors for the subplot on the right. Use 
+    this when you are happy with default colors on the left subplot.
+    - Optionally, whether you want to include subplot title
+    - Optionally, whether you want to set total plot title to anything other 
     than  default; it is disregarded if `include_subplot_titles=False`.
     - optionally, whether you want to set group plot title to anything other 
     than default; it is disregarded if `include_subplot_titles=False`.
@@ -385,6 +387,11 @@ def donut_plot_with_total_summary_and_subgroups_from_dataframe(
     # Prepare derivatives of the dataframe that may be needed for delineating 
     # the plotting data
     tc = df[state4subgroup_col].value_counts()
+    if hilolist:
+        assert len(hilolist) == len(tc), "The list provided "
+        "to specify the intensity degree must include all subgroups. Subgroups "
+        "are: '{}'.format(list(tc.index))"
+        tc = tc.loc[hilolist] # based on https://stackoverflow.com/a/26203312/8508004
     total_state_names = tc.index.tolist()
     total_state_size = tc.tolist()
     grouped = df.groupby(grouping_col)
@@ -452,12 +459,31 @@ def donut_plot_with_total_summary_and_subgroups_from_dataframe(
     ax1 = plt.subplot2grid((1,2),(0,0))
     ax1.axis('equal')
     ### First Ring (outside) and only ring for first row, first col
-    ### THIS WILL BE TOTAL DATA FOR EACH 'STATUS'
+    ### THIS WILL BE TOTAL DATA FOR EACH 'STATE' / 'SUBGROUP'
     labels_with_total_each = ["{} ({:.1%} [{}])".format(x,
         y/len(df),y) for x, y in zip(total_state_names, total_state_size)]
     tcm = [next(colormp)(0.6) for x in total_state_names]
-    if (not light_color_for_last_in_state_set) and (
-        not disregard_light_color_switch_4total):
+    if advance_left_permute_increments:
+        import itertools
+        tcm_permutations = list(itertools.permutations(tcm)) # based on 
+        # https://stackoverflow.com/a/104436/8508004
+        # Check number supplied for advancing is reasonable; using 
+        # `if __name__ == "__main__"` to customize note depending if script 
+        # called from command line.
+        if __name__ == "__main__":
+            assert advance_left_permute_increments <= len(tcm_permutations),(
+                "The integer provided after the `--permute_left_colors` option "
+                "cannot be larger than the number of\nsubgroup permutations, "
+                "which in the case of the provided data is "
+                "{}.".format(len(tcm_permutations)))
+        else:
+            assert advance_left_permute_increments <= len(tcm_permutations),(
+                "The value provided for `advance_left_permute_increments` "
+                "cannot be larger than the number of\nsubgroup permutations, "
+                "which in the case of the provided data is "
+                "{}.".format(len(tcm_permutations)))
+        tcm = list(tcm_permutations[advance_left_permute_increments-1])
+    if swap_left_colors:
         tcm.reverse()
     mypie, _ = plt.pie(
         total_state_size, radius=1.3, labels=labels_with_total_each , 
@@ -467,6 +493,14 @@ def donut_plot_with_total_summary_and_subgroups_from_dataframe(
     plt.margins(0,0)
     if include_subplot_titles:
         plt.title(total_plot_title, size = title_text_size)
+
+    
+
+
+
+    # following completion of left subplot, advance colors for right subplot if
+    # `advance_right_color`/`advance_right_color_increments` specified
+    [next(colormp) for g in range(advance_right_color_increments)]
 
 
     #####first (and only) row, second col (RIGHT subplot)
@@ -624,9 +658,12 @@ def main():
     kwargs['save_vg'] = save_vg
     kwargs['include_percent_in_grp_label'] = include_percent_in_grp_label
     kwargs['include_total_in_grp_label'] = include_total_in_grp_label
-    kwargs['hilolist'] = hilolist
     kwargs['sort_on_subgroup_name'] = sort_on_subgroup_name
+    kwargs['hilolist'] = hilolist
+    kwargs['swap_left_colors'] = args.swap_left_colors
+    kwargs['advance_left_permute_increments'] = advance_left_permute_increments
     kwargs['advance_color_increments'] = advance_color_increments
+    kwargs['advance_right_color_increments'] = advance_right_color_increments
     donut_plot_with_total_summary_and_subgroups_from_dataframe(
         df_file=args.df_file,state4subgroup_col=args.state4subgroup_col,
         grouping_col=args.grouping_col,**kwargs)
@@ -713,8 +750,33 @@ if __name__ == "__main__":
         commas, without spaces or quotes. For example `-hll yes,maybe,no`. \
         When the script is run the identifiers and default order used will be \
         indicated so that you'll have the identifiers at hand when running \
-        again.\
+        again. Use of this can causes ordering of colors assigned for the left \
+        subplot, i.e., 'total' plot, to be based on the list and not be based \
+        on abundance, and so you may wish to also add use of the \
+        `--permute_left_colors` option.\
          ")# based on https://stackoverflow.com/a/24866869/8508004
+    parser.add_argument("-slc", "--swap_left_colors",help=
+        "add this flag to reverse the order of colors used for the left \
+        subplot. Typically, unless `hilolist` is specified, colors are \
+        assigned by state/subgroup size. When `hilolist` is specified, the \
+        order determines color order assigning. However, because there are \
+        multiple ways to specify what is the 'first' color or the 'default' \
+        outcome is not satisfactory, you may find you want to \
+        reverse the colors being used in the left plot. Adding this \
+        argument provides for that. See also the `--permute_left_colors` \
+        option.`" ,
+        action="store_true")
+    parser.add_argument('-plc', '--permute_left_colors', action='store', 
+        type=int, default= '0', help="Allows for iterating through \
+        permutations of the colors in the left subplot a certain number of \
+        steps. The idea is it allows mixing around the colors assigned for \
+        particular states/subgroups among the current set to customize the \
+        left subplot. Supply the number to advance in the permutations list \
+        after the flag on the command line. For example, `-plc 2`. The number \
+        supplied cannot excede the number of possible permutations. Will take \
+        trial and error to find the optimal setting; you may wish to set up a \
+        loop for choosing setting. Using in conjunction with \
+        `--swap_left_colors` may also help.") 
     parser.add_argument('-ac', '--advance_color', action='store', type=int, 
         default= '0', help="**FOR ADVANCED USE.** Allows for advancing the \
         color palette iterator a specified number of times. The idea is it \
@@ -722,7 +784,18 @@ if __name__ == "__main__":
         'customize' the set of colors in the plot, if needed. Supply \
         the number to advance after the flag on the command line. For example, \
         `-ac 4`. If that doesn't allow dialing in a good set of colors, and \
-        you know Python, you can edit the `list_of_other_good_sequences`") 
+        you know Python, you can edit the `list_of_other_good_sequences`.") 
+    parser.add_argument('-arc', '--advance_right_color', action='store', 
+        type=int, default= '0', help="**FOR ADVANCED USE.** Allows for \
+        advancing the color palette iterator a specified number of times for \
+        just the subplot on the right side, i.e., the subplot on the left \
+        side, for the total, remains untouched. The idea is it \
+        allows skipping a specified amount of the colors to help \
+        'customize' the set of colors in the subplot on the right side when \
+        you are happy with the colors on the left subplot. Supply \
+        the number to advance after the flag on the command line. For example, \
+        `-arc 4`. If that doesn't allow dialing in a good set of colors, and \
+        you know Python, you can edit the `list_of_other_good_sequences`.") 
 
 
 
@@ -752,6 +825,8 @@ if __name__ == "__main__":
                 hilolist = [float(x) for x in hilolist]
     sort_on_subgroup_name = args.sort_on_subgroup_name
     advance_color_increments = args.advance_color
+    advance_right_color_increments = args.advance_right_color
+    advance_left_permute_increments = args.permute_left_colors
 
 
 
