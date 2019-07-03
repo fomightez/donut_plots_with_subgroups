@@ -459,7 +459,10 @@ def donut_plot_with_total_summary_and_subgroups_from_dataframe(
     #1 row 2 cols
     ######first (and only) row, first col (LEFT subplot)
     ax1 = plt.subplot2grid((1,2),(0,0))
-    #ax1.axis('equal')
+    ax1.axis('equal') #<- necessary? Commented out when trying to dial in 
+    #dimensions because worried it complicated things; however, once dialed in I
+    #ran it with it active and saw no difference. Inherited from original code 
+    # at Python Graph Gallery.
     ### First Ring (outside) and only ring for first row, first col
     ### THIS WILL BE TOTAL DATA FOR EACH 'STATE' / 'SUBGROUP'
     labels_with_total_each = ["{} ({:.1%} [{}])".format(x,
@@ -510,7 +513,10 @@ def donut_plot_with_total_summary_and_subgroups_from_dataframe(
     #####first (and only) row, second col (RIGHT subplot)
     colorm_per_grp=[next(colormp) for g in group_names]
     ax1 = plt.subplot2grid((1,2), (0, 1))
-    #ax1.axis('equal')
+    ax1.axis('equal') #<- necessary? Commented out when trying to dial in 
+    #dimensions because worried it complicated things; however, once dialed in I
+    #ran it with it active and saw no difference. Inherited from original code 
+    # at Python Graph Gallery.
     ### First Ring (outside) for first row, second col
     ### This will be size of each group
     labels_with_grp_sz = ip_it_grp_label[(
