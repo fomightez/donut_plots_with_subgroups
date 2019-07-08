@@ -14,7 +14,7 @@ If you have data as a table from elsewhere you can convert it/export into tabula
 ## Demonstration notebooks
 
 The intent is that there be (at least) **four** notebooks:  
-The **first** notebook that opens in the active session demonstrates a script that makes it easy to make a plot like the following from a dataframe.  
+The **first** notebook that opens in the active session demonstrates a script that makes it easy to make a plot like the following from a dataframe or data table.  
 Typical results (**two separate images shown**):
 
 ![typical1](imgs/donut_plot_with_subgroups_from_dataframe1.png)  
@@ -36,6 +36,12 @@ Typical result:
 ![typical_nb3](imgs/nb3_example.png)
 
 The **fourth** notebook shows how to make a plot much like the third notebook produces; however, this script is specialized for binary data for the subgroups, i.e., they can only have two resulting states at most.  
+
+Example input (red annotation added for illustrating terminology):
+
+![df_for_binary](imgs/binary_donut_guide.pn)
+
+
 Typical result:
 
 ![typical_nb4](imgs/nb4_example.png)
