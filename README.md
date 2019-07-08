@@ -39,7 +39,7 @@ The **fourth** notebook shows how to make a plot much like the third notebook pr
 
 Example input (red annotation added for illustrating terminology):
 
-![df_for_binary](imgs/binary_donut_guide.pn)
+![df_for_binary](imgs/binary_donut_guide.png)
 
 
 Typical result:
