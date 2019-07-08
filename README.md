@@ -15,6 +15,10 @@ If you have data as a table from elsewhere you can convert it/export into tabula
 
 The intent is that there be (at least) **four** notebooks:  
 The **first** notebook that opens in the active session demonstrates a script that makes it easy to make a plot like the following from a dataframe or data table.  
+Typical input for first two notebooks (only a portion is represented; red annotation added for illustrating terminology):
+
+![typical_input_repr](imgs/repr_df.png)  
+
 Typical results (**two separate images shown**):
 
 ![typical1](imgs/donut_plot_with_subgroups_from_dataframe1.png)  
