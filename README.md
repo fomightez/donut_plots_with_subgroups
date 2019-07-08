@@ -31,13 +31,13 @@ Typical result:
 
 
 The **third** notebook shows how to make a plot that includes a summary of the subgroups on the left with a plot with the subgroups on the right.  
-Typical input:
+Typical result:
 
 ![typical_nb3](imgs/nb3_example.png)
 
 The **fourth** notebook shows how to make a plot much like the third notebook produces; however, this script is specialized for binary data for the subgroups, i.e., they can only have two resulting states at most.  
 
-Example input (red annotation added for illustrating terminology):
+Typical input (red annotation added for illustrating terminology):
 
 ![df_for_binary](imgs/binary_donut_guide.png)
 
