@@ -34,6 +34,7 @@ The **third** notebook shows how to make a plot that includes a summary of the s
 Typical input (red annotation added for illustrating terminology):
 
 ![data_for_subgroups](imgs/subgrp_to_donut_guide.png)
+
 Typical result:
 
 ![typical_nb3](imgs/nb3_example.png)
