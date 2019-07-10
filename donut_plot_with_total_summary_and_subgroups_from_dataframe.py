@@ -393,7 +393,7 @@ def donut_plot_with_total_summary_and_subgroups_from_dataframe(
         assert len(hilolist) == len(tc), "The list provided "
         "to specify the intensity degree must include all subgroups. Subgroups "
         "are: '{}'.format(list(tc.index))"
-        tc = tc.loc[hilolist] # based on https://stackoverflow.com/a/26203312/8508004
+        tc = tc.reindex(hilolist)
     total_state_names = tc.index.tolist()
     total_state_size = tc.tolist()
     grouped = df.groupby(grouping_col)

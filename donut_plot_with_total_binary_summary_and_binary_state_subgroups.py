@@ -412,7 +412,7 @@ def donut_plot_with_total_binary_summary_and_binary_state_subgroups(
         assert len(hilolist) == len(tc), "The list provided "
         "to specify the intensity degree must include all subgroups. Subgroups "
         "are: '{}'.format(list(tc.index))"
-        tc = tc.loc[hilolist] # based on https://stackoverflow.com/a/26203312/8508004
+        tc = tc.reindex(hilolist)
     total_binary_names = tc.index.tolist()
     total_binary_size = tc.tolist()
     grouped = df.groupby(grouping_col)
