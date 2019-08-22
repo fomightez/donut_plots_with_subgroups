@@ -13,7 +13,7 @@ If you have data as a table from elsewhere you can convert it/export into tabula
 
 ## Demonstration notebooks
 
-The intent is that there be (at least) **four** notebooks:  
+There are  **five** demo notebooks:  
 The **first** notebook that opens in the active session demonstrates a script that makes it easy to make a plot like the following from a dataframe or data table.  
 Typical input for first two notebooks (only a portion is represented; red annotation added for illustrating terminology):
 
@@ -53,6 +53,12 @@ Typical result:
 
 ![typical_nb4](imgs/nb4_example.png)
 
+
+The **fifth** notebook shows how to use a custom list of colors with the idea that you can finetune the plot for matching a color palette:
+
+Typical result:
+
+![typical_nb5](imgs/nb5_example.png)
 
 -----
 
