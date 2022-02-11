@@ -65,3 +65,9 @@ Typical result:
 Click on a `launch binder` badge on this page to spin up a sesion where you can make plots.
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/fomightez/donut_plots_with_subgroups/master?filepath=index.ipynb)
+
+------------------------------------
+
+### Related 
+
+- [gos: (epi)genomic visualization in python](https://gosling-lang.github.io/gos/) looks to create donut-plot like heat maps according to that page (although at the time I was unable to find an example of that type among the gallery that included code)
